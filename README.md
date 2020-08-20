@@ -25,10 +25,10 @@
 
     人脸识别使用OpenCV和face-recognition来完成，当使用者说出"出门"的语句时，函数开始执行相关函数，如果摄像头监测到的人脸信息不在MySQL数据库中，则录制视频，并将视频传入阿里云OSS中，并给使用者预留的手机号发送短信通知
 
+## 部署教程
+    因为系统使用到了snowboy库，该库不支持Windows系统，所以代码只能在Linux系统下运行，所需的所有库显示在了requirement.txt内，使用pip install -r requirements.txt来安装
+
 ## Web框架 Laravel
-
-
-
 - [简单，快速的路由引擎]().
 - [强大的依赖项注入容器]().
 -[ 富有表现力，直观的数据库ORM]().
