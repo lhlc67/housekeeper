@@ -25,9 +25,7 @@
 ## 部署教程
     因为系统使用到了snowboy库，该库不支持Windows系统，所以代码只能在Linux系统下运行，所需的所有库显示在了requirement.txt内，使用pip install -r requirements.txt来安装
 
-
 ## Web框架 Laravel
-
 - [简单，快速的路由引擎]().
 - [强大的依赖项注入容器]().
 -[ 富有表现力，直观的数据库ORM]().
