@@ -1,37 +1,29 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
 
-# 系统介绍
+# 硬件系统系统介绍
 
 > 系统介绍网址 -> <http://39.106.160.132/index/>  
 
-> 后台系统登录 -><http://39.106.160.132/lhlsite/laravel/public/admin/public/login>
-> 账号：游客  密码：123456  
+> 后台系统登录 -><http://39.106.160.132/lhlsite/laravel/public/admin/public/login>  
+> 账号：游客  密码：123456    
 
-> 路由定义 /laravel/routes/web.php  
 
-> 模型定义 /laravel/app/Admin  
 
-> 控制器定义 /laravel/app/Http/Controllers/Admin
-
-> 视图定义 /laravel/resources/views/admin  
 
 
 ## 软件部分目前完成功能
 
-### RBAC鉴权授权机制
+### 1.语音唤醒、语音识别
+    使用者说出snowboy时，树莓派会发出"钉"一声，然后开始就录制5s的录音，调用百度语音识别接口进行识别，然后判断是否为特殊指令，是的话执行相应函数，不是的话就调用图灵机器人接口进行回复
 
-    通过 Manager,Role,Auth三张表实现以角色为中心的权限分配功能，经过超级管理员分配权限后，对应的角色只能访问相应的控制器下的方法这三张表的建表语句在laravel/database/migrations/目录下
 
+### 2.获取室内温度
 
-### Echarts信息可视化
+    驱动DHT11温湿度传感器，当使用者说出含有"室内温度"的语句时，播报室内温度和湿度
 
-    单片机直接与阿里云ESC上的MYSQL数据库进行连接，连接成功后每小时  向数据库发送当时采集到的温度、湿度等环境信息，MYSQL接受到信息后将数据存入数据库。
-    实时数据直接通过HTTP请求发送到Laravel(开放出  不需要CSRF验证的路由)保存至缓存中前端用Echarts分别展示实时数据和  历史数据
+### 3.人脸识别
 
-### 邮件信息订阅
-
-    如果实时数据超过某一预定阈值，Laravel通过绑定的邮箱STMP服务器来给预定该服务的Manager发送邮件
+    人脸识别使用OpenCV和face-recognition来完成，当使用者说出"出门"的语句时，函数开始执行相关函数，如果摄像头监测到的人脸信息不在MySQL数据库中，则录制视频，并将视频传入阿里云OSS中，并给使用者预留的手机号发送短信通知
 
 ## Web框架 Laravel
 
