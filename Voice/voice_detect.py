@@ -15,17 +15,18 @@ class VoiceManager:
     """
         声音检测类  
 
-        :param APP_ID  
-        :param APP_KEY  
-        :param float SECRET_KEY  
-        :param float FILE_PATH
+        :param Baidu_APP_ID  
+        :param Baidu_APP_KEY  
+        :param Baidu_SECRET_KEY  
+        :param Tuling_API_KEY
     """
 
-    def __init__(self, APP_ID, APP_KEY, SECRET_KEY):
+    def __init__(self, APP_ID, APP_KEY, SECRET_KEY, Tuling_API_KEY):
         # 初始化AipSpeech对象
         self.aipSpeech = AipSpeech(APP_ID, APP_KEY, SECRET_KEY)
+        self.tulingKey = Tuling_API_KEY
 
-    def detect(self,  filename, filetype):
+    def voice2string(self,  filename):
         """
         声音监测函数
 
@@ -33,10 +34,10 @@ class VoiceManager:
         :param filename
         :param filetype
         """
-        # 初始化路径
-
+        # 获取文件的类型
+        filetype = filename.split(".")[1]
         result = self.aipSpeech.asr(self.get_file_content(filename),
-                                    filetype, 16000, {'lan': 'zh', })
+                                    filetype, 16000)
         if (result['err_no'] == 0):
             return result['result'][0]
         else:
@@ -49,7 +50,7 @@ class VoiceManager:
         with open(FileName, 'rb') as fp:
             return fp.read()
 
-    def GetVoice(self, speakinfo, filename):
+    def string2voice(self, speakinfo, filename):
         """
         传入字符串得到mp3文件
         :param speakinfo 要说的话
@@ -67,9 +68,9 @@ class VoiceManager:
 
         os.system('mplayer %s' % filename)
 
-    def Tuling(self, Tuling_API_KEY, words):
+    def Tuling(self, words):
         url = "http://www.tuling123.com/openapi/api"
-        body = {"key": Tuling_API_KEY, "info": words.encode("utf-8")}
+        body = {"key": self.tulingKey, "info": words.encode("utf-8")}
         res = requests.post(url, data=body, verify=True)
         if res:
             date = json.loads(res.text)
@@ -78,16 +79,19 @@ class VoiceManager:
         else:
             return None
 
+     # 录音
     def Record(self, filename):
+
         # 关闭掉各种报错
         # os.close(sys.stderr.fileno())
+
+        # 定义超参数
         CHUNK = 512
         FORMAT = pyaudio.paInt16
         CHANNELS = 1
         RATE = 16000
         RECORD_SECONDS = 5
-        WAVE_OUTPUT_FILENAME = filename
-
+        # WAVE_OUTPUT_FILENAME = filename
         p = pyaudio.PyAudio()
 
         stream = p.open(format=FORMAT,
@@ -95,28 +99,27 @@ class VoiceManager:
                         rate=RATE,
                         input=True,
                         frames_per_buffer=CHUNK)
-
         print("recording...")
-
+        # 定义一个列表
         frames = []
-
-        for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
-            data = stream.read(CHUNK)
-            frames.append(data)
-
+        for _ in range(0, int(RATE / CHUNK * RECORD_SECONDS)):       # 循环，采样率 44100 / 1024 * 5
+            data = stream.read(CHUNK)       # 读取chunk个字节 保存到data中
+            frames.append(data)             # 向列表frames中添加数据data
         print("done")
 
         stream.stop_stream()
-        stream.close()
-        p.terminate()
+        stream.close()          # 关闭
+        p.terminate()           # 终止pyaudio
 
-        wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+        '''save the date to the wavfile'''
+        wf = wave.open(filename, 'wb')
         wf.setnchannels(CHANNELS)
-        wf.setsampwidth(p.get_sample_size(FORMAT))
-        wf.setframerate(RATE)
+        wf.setsampwidth(p.get_sample_size(FORMAT))      # 采样字节
+        wf.setframerate(RATE)                           # 采样频率 8000 or 16000
+        # https://stackoverflow.com/questions/32071536/typeerror-sequence-item-0-expected-str-instance-bytes-found
         wf.writeframes(b''.join(frames))
-        wf.close()
 
+        wf.close()
         time.sleep(2)
 
     def get_host_ip(self):
