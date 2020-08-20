@@ -10,13 +10,13 @@ def save_info(video_name, time):
     # 创建数据库连接对象
     conn = pymysql.connect(
         # 数据库的IP地址
-        host="39.106.160.132",
+        host="",
         # 数据库用户名称
-        user="cyq",
+        user="",
         # 数据库用户密码
-        password="123",
+        password="",
         # 数据库名称
-        db="template",
+        db="",
         # 数据库端口名称
         port=3306,
         # 数据库的编码方式 注意是utf8
@@ -55,8 +55,8 @@ def send_message(otherStyleTime):
     client = Client(account_sid, auth_token)
     message = client.messages.create(
         # 这里中国的号码前面需要加86
-        to="+8613806370658",
-        from_="+14247723077",
+        to="+",
+        from_="+",
         body=''' Message From Your Raspberry!
 %s  Your family has unknown visitors''' % otherStyleTime)
     print(message.sid)
@@ -72,11 +72,11 @@ def Upload_Video(video_name):
 
     # 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建RAM账号。
     # auth = oss2.Auth('<yourAccessKeyId>', '<yourAccessKeySecret>')
-    auth = oss2.Auth('LTAI4FzLXyVq5jPNRymDCsPw',
-                     'r4tV5hWnCOELcEivFLbcVmCiXshujo')
+    auth = oss2.Auth('',
+                     '')
     # Endpoint以杭州为例，其它Region请按实际情况填写。
     # bucket = oss2.Bucket(auth, 'http://oss-cn-hangzhou.aliyuncs.com', '<yourBucketName>')
-    bucket = oss2.Bucket(auth, 'http://oss-cn-beijing.aliyuncs.com', 'lhlc67')
+    bucket = oss2.Bucket(auth, 'http://oss-cn-beijing.aliyuncs.com', '')
 
     # <yourObjectName>上传文件到OSS时需要指定包含文件后缀在内的完整路径，例如abc/efg/123.jpg。
     # <yourLocalFile>由本地文件路径加文件名包括后缀组成，例如/users/local/myfile.txt。

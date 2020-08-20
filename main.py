@@ -42,7 +42,7 @@ print('Listening... Press Ctrl+C to exit')
 
 
 VoiceManager = Voice.voice_detect.VoiceManager(
-    '19779921', 'ohlZ0fwYGPpmjb2nTTANxj4n', 'KlN1dqu8eXU6RKsfwzNsgorntekL7Loi', '288b4064690743649baa9ee58e050bfa')
+    '', '', '', '')
 Work_path = os.getcwd()
 
 
