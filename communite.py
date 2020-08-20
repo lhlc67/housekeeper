@@ -5,12 +5,12 @@ import Camera.recogtion
 import Sensor.dht11API
 
 
-def communica(VoiceManager):
+def communica(VoiceManager, Work_path):
     # # 初始化声音监测对象  如果每次执行这个函数都要定义一次这个的话可能速度会比较慢
     # VoiceManager = Voice.voice_detect.VoiceManager(
     #     '19779921', 'ohlZ0fwYGPpmjb2nTTANxj4n', 'KlN1dqu8eXU6RKsfwzNsgorntekL7Loi', '/home/pi/project/housekeeper/Voice/')
     # os.chdir('/home/pi/project/housekeeper/Voice/')
-    os.chdir(os.getcwd() + '/Voice')
+    os.chdir(Work_path + '/Voice')
     # 录音得到录音文件
     VoiceManager.Record("result.wav")
     # 调用百度语音接口，识别刚才录制的.wav文件中的信息
@@ -37,8 +37,7 @@ def communica(VoiceManager):
         VoiceManager.string2voice("再见了主人", 'ip.mp3')
         exit()
 
-    tulingworkds = VoiceManager.Tuling(
-        '288b4064690743649baa9ee58e050bfa', result)
+    tulingworkds = VoiceManager.Tuling(result)
     print(tulingworkds)
     VoiceManager.string2voice(tulingworkds, 'result.mp3')
 
