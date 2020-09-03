@@ -49,9 +49,9 @@ def send_message(otherStyleTime):
     通过twilio服务来实现手机短信的发送的接口,让主程序来调用
     """
     # Your Account SID from twilio.com/console
-    account_sid = "AC1cebdea69cea0d8b4a352dbebb09cc39"
+    account_sid = ""
     # Your Auth Token from twilio.com/console
-    auth_token = "4fd47db9a98e773a49e1bf4ad071ed90"
+    auth_token = ""
     client = Client(account_sid, auth_token)
     message = client.messages.create(
         # 这里中国的号码前面需要加86
@@ -76,7 +76,7 @@ def Upload_Video(video_name):
                      '')
     # Endpoint以杭州为例，其它Region请按实际情况填写。
     # bucket = oss2.Bucket(auth, 'http://oss-cn-hangzhou.aliyuncs.com', '<yourBucketName>')
-    bucket = oss2.Bucket(auth, 'http://oss-cn-beijing.aliyuncs.com', '')
+    bucket = oss2.Bucket(auth, '', '')
 
     # <yourObjectName>上传文件到OSS时需要指定包含文件后缀在内的完整路径，例如abc/efg/123.jpg。
     # <yourLocalFile>由本地文件路径加文件名包括后缀组成，例如/users/local/myfile.txt。
