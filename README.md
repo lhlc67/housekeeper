@@ -21,6 +21,10 @@
 ### 3.人脸识别
 
     人脸识别使用OpenCV和face-recognition来完成，当使用者说出"出门"的语句时，函数开始执行相关函数，如果摄像头监测到的人脸信息不在MySQL数据库中，则录制视频，并将视频传入阿里云OSS中，并给使用者预留的手机号发送短信通知
+### 3.实时推流
+
+    树莓派通过ffmpeg将摄像头拍摄到的图像实时推流到阿里云上通过NGINX搭建的RTMP流媒体服务器，然后在前端中通过JavaScript将rtmp视频播放出来达到实时播放的效果。
+    推流指令：raspivid -w 640 -h 480 -b 15000000 -t 0 -a 12 -a 1024 -a "CAM-1 %Y-%m-%d %X" -ae 18,0xff,0x808000 -o - | ffmpeg -re -i - -s 640x480 -vcodec copy -acodec copy -b:v 800k -b:a 32k -f flv rtmp://<自己云服务器的公有IP地址>/videotest
 
 ## 部署教程
     因为系统使用到了snowboy库，该库不支持Windows系统，所以代码只能在Linux系统下运行，所需的所有库显示在了requirement.txt内，使用pip install -r requirements.txt来安装
