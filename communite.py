@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import Voice.voice_detect
 import os
-import Camera.recogtion
-import Sensor.dht11API
+import Camera.recogtion as recogtion
+import Sensor.dht11API as dht11API
+import Rtmp_post.rtmp_post as rtmp_post
 
 
 def communica(VoiceManager, Work_path):
@@ -20,7 +21,7 @@ def communica(VoiceManager, Work_path):
 
     if "温度" in result:
         print("---------------")
-        info = Sensor.dht11API.GetDht11()
+        info = dht11API.GetDht11()
         conncont = "当前温度为%d摄氏度" % info['temperature'] + \
             "当前湿度为百分之%d" % info['humidity']
         VoiceManager.string2voice(conncont, 'ip.mp3')
@@ -31,7 +32,11 @@ def communica(VoiceManager, Work_path):
         return 0
     elif "出门" in result:
         VoiceManager.string2voice("主人注意安全，我会自动开启人脸识别监控的", 'result.mp3')
-        Camera.recogtion.load_image()
+        recogtion.load_image()
+        return 0
+    elif "睡觉" in result:
+        VoiceManager.GetVoice("主人请放心，我会帮忙照看宝宝的", 'result.mp3')
+        rtmp_post.push_to_aliyun()
         return 0
     elif "退出" in result:
         VoiceManager.string2voice("再见了主人", 'ip.mp3')
@@ -46,9 +51,11 @@ def communica(VoiceManager, Work_path):
 
 
 # if __name__ == "__main__":
-#     communica()
+#     rtmp_post.push_to_aliyun()
 """  
 1.录音，将录音中的内容监测返回字符串 √
-2.对接图灵机器 
+2.对接图灵机器 √
 3.讲图灵机器人的回话播放出来 √
+4.人脸识别 √
+5.pytorch图像分类检测 √
 """
